@@ -1,43 +1,32 @@
 from pprint import pprint
 
-
 class Product:
     def __init__(self, name, weight, category):
         self.name = name
         self.weight = weight
         self.category = category
 
-    def __str__(self):
+    def __str__(self): #то, как данные будут выглядеть в терминале
         return f'{self.name}, {self.weight}, {self.category}'
 
 
 class Shop:
-    def __init__(self):
-        self.__file_name = "products.txt"
-
+        __file_name = "products.txt" #инкапсулированный или приватный атрибут, используемый только в классе
     def get_products(self):
-        self.opener = open(self.__file_name, 'r')
-        return self.opener.read()
-        file.close()
-
-    def get_product_names(self):
-        file = open(self.__file_name, 'r')
-        lines = file.readlines()
-        products_name = []
-        for line in lines:
-            products_name.append(line.split(', ')[0])
-        file.close()
-        return products_name
+        opener = open(self.__file_name, 'r')
+        text = opener.read()
+        opener.close()
+        return text
 
     def add(self, *products):
-        for i in products:
-            self.opener = open(self.__file_name, 'r')
-            if i.name not in self.opener.read():
-                self.opener = open(self.__file_name, 'a')
-                self.opener.write(f'{i}\n')
-                self.opener.close()
+        products_in_file = self.get_products()
+        file = open(self.__file_name, 'a')
+        for product in products:
+            if str(product) not in products_in_file:
+                file.write(str(product) + "\n")
+                products_in_file += str(product)
             else:
-                print(f'Продукт {i.name} уже есть в магазине.')
+                print(f'Продукт {product} уже есть в магазине.')
 
 
 
